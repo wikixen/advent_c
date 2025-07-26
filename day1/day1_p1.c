@@ -8,7 +8,7 @@ void swap(int *a, int *b);
 
 int main(void) {
   // Open & read file contents into file array
-  FILE *fp = fopen("input.txt", "r");
+  FILE *fp = fopen("/home/bennyhernandez/Code/advent_c/day1/input.txt", "r");
 
   int c, i=0;
   char file[14000] = {0};
