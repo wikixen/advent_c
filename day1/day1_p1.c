@@ -1,53 +1,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "quicksort.h"
 
-void quicksort(int array[], int start, int end);
-int partition(int array[], int start, int end);
-void swap(int *a, int *b);
+void readFile(char file[]); // Open & read file contents into file array
+void tokenizeToInt(int nums[], char file[]); // Split array into tokens & store separate items in diff array
 
 int main(void) {
-  // Open & read file contents into file array
-  FILE *fp = fopen("/home/bennyhernandez/Code/advent_c/day1/input.txt", "r");
-
-  int c, i=0;
   char file[14000] = {0};
-  while ((c = fgetc(fp)) != EOF){
-    file[i] = c;
-    i++;
-  }
-  i = 0;
-  fclose(fp);
+  readFile(file);
 
-  // Split array into tokens & store separate items in diff array
-  char delimit[] = "\t\r\n\v\f '   '";
-  char *token = strtok(file, delimit);
   int nums[2000] = {0};
-  while (token)
-  {
-    nums[i] = atoi(token);
-    token = strtok(NULL, delimit);
-    i++;
-  }
-  i = 0;
+  tokenizeToInt(nums, file);
 
   // Split nums into two separate arr
   int list1[1000] = {0};
   int list2[1000] = {0};
-  int k = 0;
-  for (size_t j = 0; j < (sizeof(nums)/sizeof(nums[0])); j++)
+  int j = 0, k = 0;
+  for (size_t i = 0; i < (sizeof(nums)/sizeof(nums[0])); i++)
   {
-    if (j%2==0)
+    if (i%2==0)
     {
-      list1[i] = nums[j];
-      i++;
-      // printf("%d\t", nums[j]);
+      list1[j] = nums[i];
+      j++;
     } 
-    else if(j%2==1) 
+    else if(i%2==1) 
     {
-      list2[k] = nums[j];
+      list2[k] = nums[i];
       k++;
-      // printf("%d\n", nums[j]);
     }
   }
 
@@ -63,39 +43,27 @@ int main(void) {
   printf("%d\n",sum);
 }
 
-void quicksort(int array[], int start, int end)
-{
-  if (start < end)
-  {
-    int pivot = partition(array, start, end);
+void readFile(char file[]) {
+  FILE *fp = fopen("/home/bennyhernandez/Code/advent_c/day1/input.txt", "r");
 
-    quicksort(array, start, pivot - 1);
-    quicksort(array, pivot + 1, end);
+  int c, i = 0;
+  while ((c = fgetc(fp)) != EOF)
+  {
+    file[i] = c;
+    i++;
   }
+  fclose(fp);
 }
 
-int partition(int array[], int start, int end)
+void tokenizeToInt(int nums[], char file[])
 {
-  int pivot = array[end];
-  int i = start - 1;
-
-  for (size_t j = start; j < end; j++)
+  char delimit[] = "\t\r\n\v\f '   '";
+  char *token = strtok(file, delimit);
+  int i = 0;
+  while (token)
   {
-    if (array[j]<pivot)
-    {
-      i++;
-      swap(&array[i], &array[j]);
-    }
+    nums[i] = atoi(token);
+    token = strtok(NULL, delimit);
+    i++;
   }
-
-  i++;
-  swap(&array[i], &array[end]);
-  return i;
-}
-
-void swap(int *a, int *b)
-{
-  int temp = *a;
-  *a = *b;
-  *b = temp;
 }
