@@ -2,11 +2,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include "quicksort.h"
+#include "hashmap.h"
 
 void readFile(char file[]); // Open & read file contents into file array
 void tokenizeToInt(int nums[], char file[]); // Split array into tokens & store separate items in diff array
 void splitTokens(int nums[], int leftArray[], int rightArray[], int n); // Split nums into two separate arr
 int sumArrays(int leftArray[], int rightArray[]);
+
+
 
 int main(void)
 {
@@ -23,7 +26,30 @@ int main(void)
   quicksort(leftArray, 0, (sizeof(leftArray) / sizeof(leftArray[0])) - 1);
   quicksort(rightArray, 0, (sizeof(rightArray) / sizeof(rightArray[0])) - 1);
 
-  printf("%d\n",sumArrays(leftArray, rightArray));
+  // Answer to part 1
+  // printf("%d\n",sumArrays(leftArray, rightArray));
+  
+  // Answer to part 2
+  initMap();
+
+  for (size_t i = 0; i < TABLE_SIZE; i++)
+  {
+    location temp = {.locationID = leftArray[i], .count = 0};
+    addToMap(&temp);
+  }
+
+  printMap();
+
+  // location *temp = searchMap(leftArray[0]);
+
+  // if (temp == NULL)
+  // {
+  //   printf("Not Found");
+  // }
+  // else
+  // {
+  //   printf("Found");
+  // }
 }
 
 void readFile(char file[]) {
@@ -79,3 +105,5 @@ int sumArrays(int leftArray[], int rightArray[])
   }
   return sum;
 }
+
+
